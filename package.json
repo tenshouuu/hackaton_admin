@@ -1,0 +1,87 @@
+{
+  "name": "hackaton-admin",
+  "version": "0.1.0",
+  "private": true,
+  "dependencies": {
+    "@ant-design/icons": "^4.2.1",
+    "antd": "^4.4.1",
+    "react": "^16.13.1",
+    "react-dom": "^16.13.1",
+    "react-router-dom": "^5.2.0",
+    "react-scripts": "3.4.1",
+    "styled-components": "^5.1.0"
+  },
+  "devDependencies": {
+    "@craco/craco": "^5.6.4",
+    "craco-less": "^1.17.0",
+    "eslint-config-airbnb": "^18.2.0",
+    "eslint-plugin-import": "^2.21.2",
+    "eslint-plugin-jsx-a11y": "^6.3.1",
+    "eslint-plugin-react": "^7.20.0",
+    "eslint-plugin-react-hooks": "^4.0.4"
+  },
+  "scripts": {
+    "start": "craco start",
+    "build": "craco build",
+    "eject": "craco eject"
+  },
+  "eslintConfig": {
+    "extends": [
+      "react-app",
+      "airbnb"
+    ],
+    "plugins": [
+      "react-hooks"
+    ],
+    "rules": {
+      "react-hooks/rules-of-hooks": "error",
+      "react-hooks/exhaustive-deps": "warn",
+      "react/prop-types": 0,
+      "react/display-name": 1,
+      "react/no-array-index-key": 1,
+      "react/jsx-props-no-spreading": 0,
+      "import/extensions": 1,
+      "import/no-unresolved": 0,
+      "import/prefer-default-export": 1,
+      "jsx-a11y/no-static-element-interactions": 1,
+      "jsx-a11y/no-noninteractive-element-interactions": 1,
+      "jsx-a11y/click-events-have-key-events": 1,
+      "jsx-a11y/anchor-is-valid": [
+        2,
+        {
+          "components": [
+            "Link"
+          ],
+          "specialLink": [
+            "hrefLeft",
+            "hrefRight"
+          ],
+          "aspects": [
+            "invalidHref",
+            "preferButton"
+          ]
+        }
+      ]
+    },
+    "parserOptions": {
+      "ecmaFeatures": {
+        "jsx": true
+      }
+    }
+  },
+  "browserslist": {
+    "production": [
+      ">0.2%",
+      "not dead",
+      "not op_mini all"
+    ],
+    "development": [
+      "last 1 chrome version",
+      "last 1 firefox version",
+      "last 1 safari version"
+    ]
+  },
+  "resolutions": {
+    "styled-components": "^5"
+  }
+}

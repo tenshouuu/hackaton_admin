@@ -1,0 +1,32 @@
+{
+  "extends": [
+    "airbnb"
+  ],
+  "plugins": [
+    "react-hooks"
+  ],
+  "rules": {
+    "react-hooks/rules-of-hooks": "error",
+    "react-hooks/exhaustive-deps": "warn",
+    "react/prop-types": 0,
+    "react/display-name": 1,
+    "react/no-array-index-key": 1,
+    "react/jsx-props-no-spreading": 0,
+    "import/extensions": 1,
+    "import/no-unresolved": 0,
+    "import/prefer-default-export": 1,
+    "jsx-a11y/no-static-element-interactions": 1,
+    "jsx-a11y/no-noninteractive-element-interactions": 1,
+    "jsx-a11y/click-events-have-key-events": 1,
+    "jsx-a11y/anchor-is-valid": [ 2, {
+        "components": [ "Link" ],
+        "specialLink": [ "hrefLeft", "hrefRight" ],
+        "aspects": [ "invalidHref", "preferButton" ]
+    }]
+  },
+  "parserOptions": {
+    "ecmaFeatures": {
+      "jsx": true
+    }
+  }
+}
