@@ -1,10 +1,12 @@
 ## Production running
+Node.js 12+
 
 1. Copy env configuration:
 ```bash
 cp devops/.env.production .env
 ```
 You can also change arguments.
+
 2. Install dependencies:
 ```bash
 yarn install
