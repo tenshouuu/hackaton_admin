@@ -19,7 +19,7 @@ export const StyledLogo = styled(Logo)`
 
 export const LayoutRoot = styled.div`
     height: 100%;
-    
+
     & > section {
         min-height: 100vh;
     }

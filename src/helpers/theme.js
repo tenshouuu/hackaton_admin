@@ -9,7 +9,7 @@ const mediaWidths = {
 const palette = {
   gray: '#E5E5E5',
   semiGray: '#F2F3F8',
-  primary: '#d6001e',
+  primary: '#cb455d',
   blue: '#34AFE4',
   lightBlue: '#31C0FF',
   lightLazure: '#8BDAFF',

@@ -5,7 +5,7 @@ import { LogoRoot } from './styled';
 function Logo({ className }) {
   return (
     <LogoRoot className={className}>
-      HRtrack
+      HR Track
     </LogoRoot>
   );
 }

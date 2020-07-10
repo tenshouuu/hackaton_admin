@@ -1,5 +1,10 @@
 ## Production running
 
+1. Copy env configuration:
+```bash
+cp devops/.env.production .env
+```
+You can also change arguments.
 2. Install dependencies:
 ```bash
 yarn install
@@ -12,6 +17,8 @@ yarn run build
 # or
 npm run build
 ```
+
+Result in /build directory
 
 ## Available Scripts
 
