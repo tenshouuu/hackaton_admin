@@ -1,4 +1,17 @@
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+## Production running
+
+2. Install dependencies:
+```bash
+yarn install
+# or
+npm install
+```
+3. Build application:
+```bash
+yarn run build
+# or
+npm run build
+```
 
 ## Available Scripts
 
