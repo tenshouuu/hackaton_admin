@@ -25,6 +25,10 @@ export const LayoutRoot = styled.div`
     }
     
     & .ant-layout-header {
+        background-color: white;
+    }
+    
+    & .ant-menu.ant-menu-dark, .ant-menu-dark .ant-menu-sub, .ant-menu.ant-menu-dark .ant-menu-sub {
         background-color: #222222;
     }
     

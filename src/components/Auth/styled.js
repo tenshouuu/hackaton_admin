@@ -53,7 +53,7 @@ export const AreaWrapper = styled.div`
 `;
 
 export const StyledLogo = styled(Logo)`
-    margin-bottom: 32px;
+    margin: 0 auto 32px;
 `;
 
 export const Container = styled.div`

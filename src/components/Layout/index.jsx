@@ -22,6 +22,7 @@ function Layout() {
           <Sider width={200} className="site-layout-background">
             <Menu
               mode="inline"
+              theme="dark"
               defaultSelectedKeys={['1']}
               defaultOpenKeys={['sub1']}
               style={{ height: '100%', borderRight: 0 }}

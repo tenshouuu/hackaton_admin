@@ -86,6 +86,6 @@ const tokens = {
   mediaWidths,
 };
 
-export {
+module.exports = {
   tokens,
 };
