@@ -1,5 +1,8 @@
 import React from 'react';
-import { useHistory } from 'react-router-dom';
+import { Redirect } from 'react-router-dom';
+
+import { useAuthUser } from 'store/user';
+import { useSelector } from 'react-redux';
 
 import {
   Form, Input, Button, Checkbox,
@@ -10,11 +13,16 @@ import {
 } from './styled';
 
 function Auth() {
-  const history = useHistory();
+  const authUser = useAuthUser();
   const onFinish = (values) => {
     console.log('Success:', values);
-    history.push('/dashboard');
+    authUser(values);
   };
+  const isLogin = useSelector(state => state.user.login);
+
+  if (isLogin) {
+    return <Redirect to="/dashboard" />;
+  }
 
   const onFinishFailed = (errorInfo) => {
     console.log('Failed:', errorInfo);
@@ -45,44 +53,41 @@ function Auth() {
             rules={[
               {
                 required: true,
-                message: 'Please input your Username!',
+                message: 'Пожалуйста, введите Логин!',
               },
             ]}
           >
-            <Input prefix={<UserOutlined className="site-form-item-icon" />} placeholder="Username" />
+            <Input prefix={<UserOutlined className="site-form-item-icon" />} placeholder="Логин" />
           </Form.Item>
           <Form.Item
             name="password"
             rules={[
               {
                 required: true,
-                message: 'Please input your Password!',
+                message: 'Пожалуйста, введите Пароль!',
               },
             ]}
           >
             <Input
               prefix={<LockOutlined className="site-form-item-icon" />}
               type="password"
-              placeholder="Password"
+              placeholder="Пароль"
             />
           </Form.Item>
           <Form.Item>
-            <Form.Item name="remember" valuePropName="checked" noStyle>
-              <Checkbox>Remember me</Checkbox>
-            </Form.Item>
+          <Checkbox>Запомнить</Checkbox>
           </Form.Item>
-
           <Form.Item>
             <Button
               type="primary"
               htmlType="submit"
               className="login-form-button"
             >
-              Log in
+              Войти
             </Button>
-            Or
+            Или
             {' '}
-            <a href="">register now!</a>
+            <a href="" style={{ pointerEvents: 'none', opacity: '0.5' }}>Зарегистрироваться</a>
           </Form.Item>
         </Form>
       </Container>

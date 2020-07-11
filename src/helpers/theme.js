@@ -16,9 +16,10 @@ const palette = {
   semiBlue: '#24445B',
   semiDarkBlue: '#14374A',
   darkBlue: '#0A2936',
+  brown: '#222222',
   gray: '#383c46',
   dark: '#011219',
-  black: '#010D2E',
+  black: '#000000',
   white: '#FFFFFF',
 };
 

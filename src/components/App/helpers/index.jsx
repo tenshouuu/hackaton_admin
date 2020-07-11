@@ -1,6 +1,6 @@
 import React from 'react';
 import { Redirect } from 'react-router-dom';
-import Auth from '../../Auth';
+import Auth from 'pages/Auth';
 import Layout from '../../Layout';
 
 export const routes = [
@@ -12,12 +12,12 @@ export const routes = [
   {
     Component: Layout,
     exact: false,
-    path: '/(dashboard|resume)/:params?',
+    path: '/(dashboard|resume|favorite|declined|archive|settings)/:params?',
   },
   {
     Component: Auth,
     exact: false,
-    path: '/auth',
+    path: '/login',
   },
   {
     Component: () => <div>Logout</div>,

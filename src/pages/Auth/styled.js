@@ -64,6 +64,7 @@ export const Container = styled.div`
     box-shadow: 0px 0px 20px rgba(128, 163, 182, 0.0996504);
     padding: 40px 40px 20px;
     border-radius: 6px;
+    margin: 0 16px;
     
     & button {
         margin-right: 12px;
