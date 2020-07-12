@@ -11,18 +11,22 @@ const links = [
   {
     title: 'Все',
     link: '/dashboard',
+    style: { },
   },
   {
     title: 'Избранное',
     link: '/favorite',
+    style: { pointerEvents: 'none', opacity: '0.5' },
   },
   {
     title: 'Отклоненные',
     link: '/declined',
+    style: { pointerEvents: 'none', opacity: '0.5' },
   },
   {
     title: 'Архив',
     link: '/archive',
+    style: { pointerEvents: 'none', opacity: '0.5' },
   },
 ];
 
@@ -36,8 +40,8 @@ function Menu() {
       style={{ height: '100%', borderRight: 0 }}
     >
       <SubMenu key="sub1" icon={<UserOutlined />} title="Резюме">
-        {links.map(({ title, link }) => (
-          <StyledItem key={link} isSelected={url === link}>
+        {links.map(({ title, link, style }) => (
+          <StyledItem key={link} isSelected={url === link} style={style}>
             <StyledLink to={link}>
               {title}
             </StyledLink>

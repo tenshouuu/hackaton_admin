@@ -1,5 +1,5 @@
 import React, { useState, useCallback, useEffect } from 'react';
-import { Input, message } from 'antd';
+import {Menu, message, Modal} from 'antd';
 import { PlusOutlined } from '@ant-design/icons';
 
 import { fetchGetResumes } from 'api';
@@ -12,13 +12,11 @@ import {
   StyledSearch,
 } from './styled';
 import { columns } from './helpers';
+import { ModalForm } from './components';
 
 function Resumes() {
   const [selectedRowKeys, setSelectedRowKeys] = useState([]);
-  const [{ bottom }] = useState({
-    top: 'topLeft',
-    bottom: 'bottomRight',
-  });
+  const [modalVisible, setModalVisible] = useState(false);
   const [data, setData] = useState([]);
   const [pagination, setPagination] = useState({
     current: 1,
@@ -27,11 +25,19 @@ function Resumes() {
   });
   const [loading, setLoading] = useState(false);
 
+  const handleOpenModal = useCallback(() => {
+    setModalVisible(true);
+  }, []);
+
+  const handleCloseModal = useCallback(() => {
+    setModalVisible(false);
+  }, []);
+
   const handleFetchData = useCallback((currentPagination) => {
     setLoading(true);
     fetchGetResumes({
-      offset: currentPagination.current,
-      limit: currentPagination.limit,
+      offset: currentPagination.current - 1,
+      limit: currentPagination.pageSize,
     })
       .catch((e) => {
         setLoading(false);
@@ -41,14 +47,14 @@ function Resumes() {
         const respData = resp.data;
         setLoading(false);
         if (respData) {
-          if (respData.resumes) {
-            setData(respData.resumes);
+          if (respData.results) {
+            setData(respData.results);
           }
 
           setPagination({
-            current: respData.offset,
-            limit: respData.limit,
-            total: respData.total,
+            current: currentPagination.current,
+            limit: currentPagination.pageSize,
+            total: respData.count,
           });
         }
       });
@@ -56,13 +62,16 @@ function Resumes() {
 
   useEffect(() => {
     handleFetchData(pagination);
-  }, [])
+  }, []);
 
   const handleTableChange = useCallback((pagination, filters, sorter) => {
     handleFetchData(pagination);
   }, [handleFetchData]);
 
-  console.log(data);
+  const handleCloseModalForm = useCallback(() => {
+    handleFetchData(pagination);
+    handleCloseModal();
+  }, [handleCloseModal, handleFetchData, pagination]);
 
   return (
     <ResumesRoot>
@@ -70,26 +79,36 @@ function Resumes() {
         <StyledSearch
           placeholder="имя"
           onSearch={(value) => console.log(value)}
+          style={{ pointerEvents: 'none', opacity: '0.5' }}
         />
-        <StyledButton type="primary">
+        <StyledButton type="primary" onClick={handleOpenModal}>
           <PlusOutlined />
-          <span>Загрузить резюме</span>
+          <span>Добавить резюме</span>
         </StyledButton>
       </Filters>
       <Container>
-      <StyledTable
-        rowKey={(record) => record.id}
-        rowSelection={{
-          selectedRowKeys,
-          onChange: setSelectedRowKeys,
-        }}
-        loading={loading}
-        columns={columns}
-        pagination={pagination}
-        dataSource={data}
-        onChange={handleTableChange}
-      />
+        <StyledTable
+          rowKey={(record) => record.id}
+          rowSelection={{
+            selectedRowKeys,
+            onChange: setSelectedRowKeys,
+          }}
+          loading={loading}
+          columns={columns}
+          pagination={pagination}
+          dataSource={data}
+          onChange={handleTableChange}
+        />
       </Container>
+      <Modal
+        destroyOnClose
+        visible={modalVisible}
+        onOk={handleCloseModal}
+        onCancel={handleCloseModal}
+        footer={null}
+      >
+        <ModalForm onClose={handleCloseModalForm} />
+      </Modal>
     </ResumesRoot>
   );
 }

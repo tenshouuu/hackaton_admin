@@ -1,49 +1,83 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
+import { useParams, useHistory } from 'react-router-dom';
 import { Typography, Avatar } from 'antd';
 import { UserOutlined } from '@ant-design/icons';
 
+import { fetchGetResume } from 'api';
 import {
   ResumeRoot, StyledContent, StyledCard, StyledSocials, TitleCard,
 } from './styled';
 
-const { Text, Link, Title } = Typography;
+const { Text, Title } = Typography;
 
 function Resume() {
+  const { id } = useParams();
+  const history = useHistory();
+  const [data, setData] = useState({
+    created_at: '',
+    description: '',
+    email: '',
+    hh_link: '',
+    id: null,
+    linkedin_link: null,
+    max_salary: null,
+    min_salary: null,
+    name: '',
+    specialty: '',
+    status: 'UNKNOWN',
+  });
+
+  useEffect(() => {
+    if (id) {
+      fetchGetResume(id)
+        .catch(() => {
+          history.push('/dashboard');
+        })
+        .then((resp = {}) => {
+          const respData = resp.data;
+          if (respData) {
+            setData(respData);
+          }
+        });
+    } else {
+      history.push('/dashboard');
+    }
+  }, []);
+
   return (
     <ResumeRoot>
       <StyledContent>
-        <Title level={2}>Resume title</Title>
+        <Title level={2}>Подробная информация</Title>
         <Text>
-          To be, or not to be, that is a question: Whether it is nobler in the mind to suffer. The slings and arrows of outrageous fortune Or to take arms against a sea of troubles, And by opposing end them? To die: to sleep; No more; and by a sleep to say we end
-          <br />
-          <br />
-          The heart-ache and the thousand natural shocks That flesh is heir to, 'tis a consummation Devoutly to be wish'd. To die, to sleep
-          <br />
-          To sleep- perchance to dream: ay, there's the rub! For in that sleep of death what dreams may come When we have shuffled off this mortal coil, Must give us pause. There 's the respect That makes calamity of so long life--William Shakespeare
+          {data.description || ''}
         </Text>
       </StyledContent>
       <StyledCard title={(
         <TitleCard>
           <Avatar icon={<UserOutlined />} />
           {' '}
-          <Title level={4}>Владимир Путин</Title>
+          <Title level={4}>
+            {data.name || ''}
+          </Title>
         </TitleCard>
         )}
       >
         <Title level={4}>Должность:</Title>
-        <Text>Уборщик</Text>
+        <Text>{data.specialty || ''}</Text>
         <Title level={4}>Контакты:</Title>
-        <StyledSocials contacts={{
-          email: 'example@mail.com',
-          hh: 'https://hh.ru/',
-        }}
-        />
+        <StyledSocials contacts={data} />
         <Title level={4}>Средняя зарплата:</Title>
-        <Text>40 000р</Text>
+        <Text>-</Text>
         <Title level={4}>Ожидаемая зарплата:</Title>
-        <Text>60 000р</Text>
+        <Text>
+          {`${(data.min_salary
+            ? `от ${data.min_salary}р`
+            : '')} ${(data.max_salary
+            ? `до ${data.max_salary}р`
+            : '')}`}
+        </Text>
         <Title level={4}>Навыки:</Title>
-        <Text>Касса</Text>
+        <Text>-</Text>
       </StyledCard>
     </ResumeRoot>
   );

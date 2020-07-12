@@ -1,11 +1,13 @@
 import {
   ADD_USER,
   LOGIN_USER,
+  ADD_SENDER_EMAILS_USER,
 } from './actions';
 
 export const initialState = {
   email: '',
-  senderEmail: '',
+  senderEmails: [],
+  serviceEmail: 'trudhack@sulyak.info',
   login: false,
   first_name: '',
   last_name: '',
@@ -18,6 +20,8 @@ const reducer = (state = initialState, action) => {
       return { ...state, ...action.payload };
     case LOGIN_USER:
       return { ...state, login: action.payload };
+    case ADD_SENDER_EMAILS_USER:
+      return { ...state, senderEmails: action.payload };
     default:
       return { ...state };
   }

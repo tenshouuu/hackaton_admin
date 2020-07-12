@@ -1,30 +1,49 @@
-import React from 'react';
+import React, { useEffect, useCallback } from 'react';
 import {
-  Typography, Form, Input, Popover, Button,
+  Typography, Form, Input, Popover, Button, message,
 } from 'antd';
-import { QuestionCircleOutlined } from '@ant-design/icons';
-import { useSelector } from "react-redux";
+import { QuestionCircleOutlined, CloseOutlined } from '@ant-design/icons';
+import { useSelector } from 'react-redux';
 
-import { SettingsRoot, StyledForm, Item, TooltipContent } from './styled';
+import {
+  useFetchGetSenderEmails,
+  useFetchDeleteSenderEmail, useFetchAddSenderEmail,
+} from 'store/user';
+import {
+  SettingsRoot, StyledForm, Item, TooltipContent, EmailItem, SocialWrapper,
+} from './styled';
 
 const { Link } = Typography;
 
-const layout = {
-  labelCol: { span: 8 },
-  wrapperCol: { span: 16 },
-};
 const validateMessages = {
-  required: '${label} обязательно!',
+  required: 'Поле обязательно!',
   types: {
-    email: '${label} неверно указана почта!',
-    number: '${label} неверно указан номер!',
+    email: 'Неверно указана почта!',
   },
 };
 
 function Settings() {
-  const { email } = useSelector(state => state.user)
-  const onFinish = (values) => {
-    console.log(values);
+  const [form] = Form.useForm();
+  const { email, serviceEmail, senderEmails } = useSelector((state) => state.user);
+  const fetchGetSenderEmails = useFetchGetSenderEmails();
+  const fetchDeleteSenderEmails = useFetchDeleteSenderEmail();
+  const fetchAddSenderEmail = useFetchAddSenderEmail();
+
+  useEffect(() => {
+    fetchGetSenderEmails();
+  }, []);
+
+  const onDeleteLinkedEmail = useCallback((id) => {
+    fetchDeleteSenderEmails(id);
+  }, [fetchDeleteSenderEmails]);
+
+  const onFinish = ({ email = '' }) => {
+    if (email) {
+      form.validateFields()
+        .then(() => fetchAddSenderEmail(email))
+        .then(() => form.resetFields())
+        .catch((e) => message.error(e.message));
+    }
   };
   return (
     <SettingsRoot>
@@ -36,32 +55,54 @@ function Settings() {
         <h5>
           Почта сервиса:
           &nbsp;
-          <Popover placement="rightTop" content={<TooltipContent>
-            Почта на которую необходиимо настроить пересылку писем кандидатов.
-            &nbsp;
-            <Link href="https://support.google.com/mail/answer/10957?hl=ru" target="_blank" rel="noopener noreferrer">
-              Подробнее
-            </Link>
-          </TooltipContent>} trigger="hover">
+          <Popover
+            placement="right"
+            content={(
+              <TooltipContent>
+                Почта на которую необходиимо настроить пересылку писем кандидатов.
+                &nbsp;
+                <Link href="https://support.google.com/mail/answer/10957?hl=ru" target="_blank" rel="noopener noreferrer">
+                  Подробнее
+                </Link>
+              </TooltipContent>
+          )}
+            trigger="hover"
+          >
             <QuestionCircleOutlined />
           </Popover>
         </h5>
-        <div>service@mail.com</div>
+        <div>{serviceEmail}</div>
       </Item>
       <Item>
         <h5>Интеграция с сервисами:</h5>
-        <div>
+        <SocialWrapper>
           <img src="/images/hh.png" width="32" style={{ borderRadius: '50%' }} />
           <img src="/images/linkedin.png" />
+        </SocialWrapper>
+      </Item>
+      <Item>
+        <h5>Ваша рабочие почты для пересылки резюме:</h5>
+        <div>
+          {senderEmails.map(({ id, email: linkedEmail }) => (
+            <EmailItem key={id} onClick={() => onDeleteLinkedEmail(id)}>
+              <div>{linkedEmail}</div>
+              <CloseOutlined />
+            </EmailItem>
+          ))}
         </div>
       </Item>
-      <StyledForm layout="vertical" name="nest-messages" onFinish={onFinish} validateMessages={validateMessages}>
-        <Form.Item name={['user', 'email']} label="Ваша рабочая почта для пересылки резюме" rules={[{ type: 'email' }]}>
+      <StyledForm
+        form={form}
+        layout="vertical"
+        onFinish={onFinish}
+        validateMessages={validateMessages}
+      >
+        <Form.Item name="email" rules={[{ type: 'email' }]}>
           <Input />
         </Form.Item>
         <Form.Item>
           <Button type="primary" htmlType="submit">
-            Сохранить
+            Добавить
           </Button>
         </Form.Item>
       </StyledForm>

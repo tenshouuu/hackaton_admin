@@ -2,7 +2,6 @@
   "name": "hackaton-admin",
   "version": "0.1.0",
   "private": true,
-  "proxy": "http://sulyak.info:777",
   "dependencies": {
     "@ant-design/icons": "^4.2.1",
     "antd": "^4.4.1",

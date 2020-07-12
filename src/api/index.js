@@ -1,8 +1,20 @@
 import axios from 'axios';
 import { getResumesResponse } from 'api/mockData';
 
+function deleteAllCookies() {
+  const cookies = document.cookie.split(';');
+
+  for (let i = 0; i < cookies.length; i++) {
+    const cookie = cookies[i];
+    const eqPos = cookie.indexOf('=');
+    const name = eqPos > -1 ? cookie.substr(0, eqPos) : cookie;
+    document.cookie = `${name}=;expires=Thu, 01 Jan 1970 00:00:00 GMT`;
+  }
+}
+
 export function fetchData(url, init = {}) {
   const token = localStorage.getItem('token');
+  deleteAllCookies();
 
   const config = {
     method: 'get',
@@ -14,13 +26,15 @@ export function fetchData(url, init = {}) {
   };
 
   if (token) {
-    config.headers.Authorization = `Bearer ${token}`;
+    config.headers.Authorization = `JWT ${token}`;
   }
   return axios(config)
     .catch((e) => {
-      if (e.request.status === 401 && window.location.pathname !== '/login') {
+      if (e.request.status === 401) {
         localStorage.setItem('token', '');
-        window.location.pathname = '/login';
+        if (window.location.pathname !== '/login') {
+          window.location.pathname = '/login';
+        }
       }
       return Promise.reject(e);
     });
@@ -28,7 +42,7 @@ export function fetchData(url, init = {}) {
 
 export function fetchAuthUser(user) {
   return fetchData('/auth/login/', {
-    method: 'post',
+    method: 'POST',
     data: user,
   });
 }
@@ -45,16 +59,33 @@ export function fetchGetResumes({
   offset,
   limit,
 }) {
+  return fetchData(`/resumes/?offset=${offset}&limit=${limit}`);
+}
+
+export function fetchGetResume(id) {
+  return fetchData(`/resumes/${id}/`);
+}
+
+export function fetchGetLinkedEmails() {
+  return fetchData('/linked-emails/');
+}
+
+export function fetchAddLinkedEmail(email) {
+  return fetchData('/linked-emails/', {
+    method: 'post',
+    data: { email },
+  });
+}
+
+export function fetchDeleteLinkedEmail(id) {
+  return fetchData(`/linked-emails/${id}/`, {
+    method: 'delete',
+  });
+}
+
+export function fetchAddResume(resume) {
   return fetchData('/resumes/', {
-    data: {
-      offset,
-      limit,
-    },
-  })
-  // mocking
-    .catch(() => {})
-    .then(() => getResumesResponse({
-      offset,
-      limit,
-    }));
+    method: 'post',
+    data: resume,
+  });
 }

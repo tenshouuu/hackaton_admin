@@ -12,7 +12,7 @@ function AuthCheck({ children }) {
   useEffect(() => {
     checkUser()
       .catch(() => {
-
+        setLoading(false);
       })
       .finally(() => setLoading(false));
   }, []);

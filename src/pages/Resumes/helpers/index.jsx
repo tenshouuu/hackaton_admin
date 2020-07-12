@@ -1,50 +1,39 @@
-import { Tag, Menu, Dropdown } from 'antd';
+import { Menu, Dropdown } from 'antd';
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { shuffle } from 'helpers';
+
 import Socials from 'components/Socials';
 import { ActionIcon, StyledMenu } from '../styled';
-
-const tagColors = [
-  'magenta',
-  'red',
-  'volcano',
-  'orange',
-  'gold',
-  'lime',
-  'green',
-  'cyan',
-  'blue',
-  'geekblue',
-  'purple',
-];
 
 export const columns = [
   {
     title: 'Имя',
     key: 'name',
-    width: '200px',
+    width: '20%',
     render: (_, { name }) => <a>{name}</a>,
   },
   {
     title: 'Специальность',
-    dataIndex: 'profile',
-    key: 'profile',
+    dataIndex: 'specialty',
+    key: 'specialty',
   },
   {
-    title: 'Средняя зарплата',
-    dataIndex: 'price',
+    title: 'Зарплата',
     key: 'price',
+    render: (_, {
+      max_salary,
+      min_salary,
+    }) => `${(min_salary ? `от ${min_salary}р` : '')} ${(max_salary ? `до ${max_salary}р` : '')}`,
   },
   {
     title: 'Контакты',
     key: 'contacts',
-    render: (_, { contacts }) => <Socials contacts={contacts} />,
+    render: (_, record) => <Socials contacts={record} />,
   },
   {
     title: 'Статус',
-    dataIndex: 'status',
     key: 'status',
+    render: (_, { status }) => (status === 'UNKNOWN' ? '-' : status),
   },
   {
     title: '',
@@ -58,10 +47,10 @@ export const columns = [
           <Menu.Item key="0">
             <Link to={`/resume/${id}`}>Открыть</Link>
           </Menu.Item>
-          <Menu.Item key="1">
+          <Menu.Item key="1" style={{ pointerEvents: 'none', opacity: '0.5' }}>
             <a href="/">В избранное</a>
           </Menu.Item>
-          <Menu.Item key="1">
+          <Menu.Item key="1" style={{ pointerEvents: 'none', opacity: '0.5' }}>
             <a href="/">Отклонить</a>
           </Menu.Item>
         </StyledMenu>
