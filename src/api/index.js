@@ -1,5 +1,4 @@
 import axios from 'axios';
-import { getResumesResponse } from 'api/mockData';
 
 function deleteAllCookies() {
   const cookies = document.cookie.split(';');
